@@ -39,7 +39,7 @@ public class FXMLController {
     private TextField txtMinuti; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbMese"
-    private ComboBox<?> cmbMese; // Value injected by FXMLLoader
+    private ComboBox<Integer> cmbMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbM1"
     private ComboBox<?> cmbM1; // Value injected by FXMLLoader
@@ -52,12 +52,26 @@ public class FXMLController {
 
     @FXML
     void doConnessioneMassima(ActionEvent event) {
-    	
+    	txtResult.clear();
+    	txtResult.appendText(this.model.getMaxGiocatori());
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-    	
+    	txtResult.clear();
+    	Integer mese = cmbMese.getValue();
+    	if(mese==null) {
+    		txtResult.appendText("Selezionare un mese");
+    		return;
+    	}
+    	int min;
+    	try {
+    		min = Integer.parseInt(txtMinuti.getText());
+    	} catch(Exception e) {
+    		txtResult.appendText("Inserire un valore valido nel campo MIN");
+    		return;
+    	}
+    	txtResult.appendText(this.model.creaGrafo(mese, min));
     }
 
     @FXML
@@ -79,7 +93,8 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
-  
+    	for(int i = 1;i<=12;i++)
+    		cmbMese.getItems().add(i);
     }
     
     
